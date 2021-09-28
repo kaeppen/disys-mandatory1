@@ -29,7 +29,7 @@ type teacher struct {
 func main() {
 	router := gin.Default()
 	router.GET("/students", getStudents)
-
+	router.POST("/students", postStudents)
 	router.Run("localhost:8080")
 }
 
@@ -41,4 +41,17 @@ var students = []student{
 
 func getStudents(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, students)
+}
+
+func postStudents(c *gin.Context) {
+	var newStudent student
+
+	// Call BindJSON to bind the received JSON to newStudent
+	if err := c.BindJSON(&newStudent); err != nil {
+		return
+	}
+
+	// Add the new student to the slice.
+	students = append(students, newStudent)
+	c.IndentedJSON(http.StatusCreated, newStudent)
 }
