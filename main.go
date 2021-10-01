@@ -14,10 +14,10 @@ type student struct {
 }
 
 type course struct {
-	ID       string    `json:"id"`
-	Rating   []float64 `json:"rating"`
-	Name     string    `json:"name"`
-	Students []string  `json:"students"`
+	ID       string   `json:"id"`
+	Rating   float64  `json:"rating"`
+	Name     string   `json:"name"`
+	Students []string `json:"students"`
 }
 
 type teacher struct {
@@ -28,10 +28,16 @@ type teacher struct {
 
 func main() {
 	router := gin.Default()
-	router.GET("/students", getStudents)
-	router.POST("/students", postStudents)
+	router.GET("/courses", getCourses)
+	router.POST("/courses", postCourses)
 
 	router.Run("localhost:8080")
+}
+
+var courses = []course{
+	{ID: "1", Rating: 9.9, Name: "Dømat", Students: []string{"Stefan", "Dagrun", "Marcus"}},
+	{ID: "2", Rating: 5.2, Name: "BPAK", Students: []string{}},
+	{ID: "3", Rating: 10.0, Name: "GrPro", Students: []string{"Christoffer", "Martin", "Henning"}},
 }
 
 var students = []student{
@@ -40,6 +46,25 @@ var students = []student{
 	{ID: "3", Name: "Ib", Courses: []string{"Science", "Math", "Computer Science"}},
 }
 
+func getCourses(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, courses)
+}
+
+func postCourses(c *gin.Context) {
+	var newCourse course
+
+	// Call BindJSON to bind the received JSON to newStudent
+	if err := c.BindJSON(&newCourse); err != nil {
+		return
+	}
+
+	// Add the new student to the slice.
+	courses = append(courses, newCourse)
+	c.IndentedJSON(http.StatusCreated, newCourse)
+}
+
+//deprecated
+/*
 func getStudents(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, students)
 }
@@ -56,3 +81,4 @@ func postStudents(c *gin.Context) {
 	students = append(students, newStudent)
 	c.IndentedJSON(http.StatusCreated, newStudent)
 }
+*/
