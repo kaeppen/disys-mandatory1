@@ -30,6 +30,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/students", getStudents)
 	router.POST("/students", postStudents)
+
 	router.Run("localhost:8080")
 }
 
