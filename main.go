@@ -29,6 +29,7 @@ type teacher struct {
 func main() {
 	router := gin.Default()
 	router.GET("/courses", getCourses)
+	router.GET("/courses/:id", getCourseByID)
 	router.POST("/courses", postCourses)
 
 	router.Run("localhost:8080")
@@ -63,22 +64,16 @@ func postCourses(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newCourse)
 }
 
-//deprecated
-/*
-func getStudents(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, students)
-}
+func getCourseByID(c *gin.Context) {
+	id := c.Param("id")
 
-func postStudents(c *gin.Context) {
-	var newStudent student
-
-	// Call BindJSON to bind the received JSON to newStudent
-	if err := c.BindJSON(&newStudent); err != nil {
-		return
+	// Loop over the list of albums, looking for
+	// an album whose ID value matches the parameter.
+	for _, a := range courses {
+		if a.ID == id {
+			c.IndentedJSON(http.StatusOK, a)
+			return
+		}
 	}
-
-	// Add the new student to the slice.
-	students = append(students, newStudent)
-	c.IndentedJSON(http.StatusCreated, newStudent)
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "course not found"})
 }
-*/
