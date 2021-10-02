@@ -9,8 +9,7 @@ import (
 type student struct {
 	ID      string   `json:"id"`
 	Name    string   `json:"name"`
-	Courses []string `json:"courses"` //skal muligvis senere relatere til course "objekter"? samme for de andre arrays
-	//how do we define course workloads?
+	Courses []string `json:"courses"` //skal muligvis senere relatere til course "objekter"? samme for de andre arrays <-- kun hvis man virkelig er fresh
 }
 
 type course struct {
