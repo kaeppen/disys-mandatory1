@@ -1,16 +1,40 @@
-syntax = "proto2";
+syntax = "proto3";
 package courses;
 
-option go_package = "./pub";
+option go_package = "./course";
+
+//importer "well known types"
+import "google/protobuf/empty.proto"; 
+import "google/protobuf/wrappers.proto"; 
 
 service Courses {
+    rpc AddCourse (NewCourse) returns (Course) {}
+    rpc DeleteCourse (google.protobuf.Int32Value) returns (Course) {}
+    rpc GetCourseById (google.protobuf.Int32Value) returns (Course) {}
+    rpc GetCourses (google.protobuf.Empty) returns (CourseArray) {}
+    rpc UpdateCourse (google.protobuf.Int32Value) returns (Course) {}
 
+}
+
+
+//Define NewCourse so that not all fields need to be set from the get-go 
+//(not compliant with the rest API, we know)
+message NewCourse {
+    int32 ID = 1; 
+    string Name = 2; 
+    float Workload = 3; 
 
 }
 
 message Course {
-    required int32 ID = 1; 
+    int32 ID = 1; 
     optional float Rating = 2; 
-    required string Name = 3; 
-    repeated string Students = 4; 
+    string Name = 3;
+    float Workload = 4; 
+    repeated string Students = 5; 
 }
+
+message CourseArray {
+    repeated Course courses = 1; 
+}
+
