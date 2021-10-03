@@ -18,7 +18,8 @@ func main() {
 	router.GET("/courses", getCourses)
 	router.GET("/courses/:id", getCourseByID)
 	router.POST("/courses", postCourses)
-
+	router.DELETE("courses/:id", deleteCourseByID)
+	router.PUT("courses/:id", updateCourse)
 	router.Run("localhost:8080")
 }
 
@@ -55,4 +56,44 @@ func getCourseByID(c *gin.Context) {
 		}
 	}
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "course not found"})
+}
+
+//functionality tested :) 
+func deleteCourseByID(c *gin.Context) {
+	id := c.Param("id")
+	var newArray []course
+	for i := 0; i < len(courses); i++ {
+		if courses[i].ID == id {
+			//do nothing 
+		} else {
+			//append to the new slice
+			newArray = append(newArray, courses[i])
+		}
+	}
+	//copy the new array into courses (also possible with copy() method?)
+	courses = newArray
+	//Man bør: 
+	//2: Lave en måde at indikere om det lykkedes eller ej  //overvej at sammenligne størrelse inden og efter, og give fejl hvis størrelse er den samme
+}
+
+//kombination af tilføj og delete 
+func updateCourse(c *gin.Context) {
+	var newCourse course 
+
+	//bind the recieved json to the new object
+	if err := c.BindJSON(&newCourse); err != nil {
+		return
+	}
+
+	//iterate over all courses and replace the one in question 
+	id := c.Param("id")
+	for i :=0; i < len(courses); i++ {
+		if courses[i].ID == id {
+			courses[i] = newCourse 
+			//all good
+			c.IndentedJSON(http.StatusOK, newCourse)
+			return
+		}
+	}
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "something went wrong"})
 }
