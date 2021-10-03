@@ -1,0 +1,91 @@
+swagger: "2.0"
+
+info:
+    description: Det her er vores mega fede description brr brr
+    title: Mandatory exercise 1 (daas, seho, lanc)
+    version: 1.0.0
+host: "dagruns.paradise.com"
+basePath: /v1
+schemes:
+  - https
+  
+paths: 
+  /course: 
+    get: 
+      tags: 
+      - "course"
+      summary: "Get all courses"
+      operationId: "getCourses"
+      responses: 
+        "200":
+          description: "OK" 
+    post: 
+      tags: 
+        - "course"
+      summary: "Add a course"
+      operationId: "addCourse"
+      responses: 
+        "200":
+          description: "OK"
+        "405":
+          description: "Invalid input"
+      
+  /course/{courseId}:
+    get: 
+      tags: 
+      - "course"
+      description: "This is used to find a course by id"
+      summary: "Find a course by id"
+      operationId: "getCourseByID"
+      parameters: 
+      - name: "courseId"
+        in: "path"
+        description: "ID of course to find"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses: 
+        "200":
+          description: "OK"
+        "404":
+          description: "Invalid ID!"
+    delete: 
+      tags:
+      - "course"
+      summary: "Deletes a course"
+      operationId: "deleteCourse"
+      parameters: 
+      - name: "courseId"
+        in: "path"
+        description: "ID of course to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses: 
+        "200":
+          description: "OK"
+        "404":
+          description: "Invalid ID!"
+    put: 
+      tags:
+      - "course"
+      summary: "Update a course"
+      operationId: "updateCourse"
+      parameters: 
+      - name: "courseId"
+        in: "path"
+        description: "ID of course that needs updating"
+        required: true
+        type: "integer"
+        format: "int64"
+      #body kan bruges til at give en json payload med, men hvordan
+      #finder vi det korrekte element at opdatere? 
+      #- name: ""
+      #  in: "body"
+      #  description: "Updated rating"
+      #  required: false
+      responses: 
+        "200":
+          description: "OK"
+        
+        
