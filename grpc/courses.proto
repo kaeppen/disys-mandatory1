@@ -1,0 +1,16 @@
+syntax = "proto2";
+package courses;
+
+option go_package = "./pub";
+
+service Courses {
+
+
+}
+
+message Course {
+    required int32 ID = 1; 
+    optional float Rating = 2; 
+    required string Name = 3; 
+    repeated string Students = 4; 
+}
