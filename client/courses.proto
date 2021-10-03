@@ -1,0 +1,11 @@
+service Courses {
+
+
+}
+
+message Course {
+    int32 ID = 1; 
+    float64 Rating = 2; 
+    string Name = 3; 
+    repeated string Students = 4; 
+}
