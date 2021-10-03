@@ -2,8 +2,10 @@ package main
 
 import (
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
+
 //hvis man virkelig er fresh, så skal nogle af felterne i struct være pointers, men det er ikke i denne opgaves scope
 
 type course struct {
@@ -28,7 +30,6 @@ var courses = []course{
 	{ID: "2", Rating: 5.2, Name: "BPAK", Students: []string{}},
 	{ID: "3", Rating: 10.0, Name: "GrPro", Students: []string{"Christoffer", "Martin", "Henning"}},
 }
-
 
 func getCourses(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, courses)
@@ -58,13 +59,13 @@ func getCourseByID(c *gin.Context) {
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "course not found"})
 }
 
-//functionality tested :) 
 func deleteCourseByID(c *gin.Context) {
 	id := c.Param("id")
+	var oldLength = len(courses) //get the length of the array before (to be used when determining status)
 	var newArray []course
 	for i := 0; i < len(courses); i++ {
 		if courses[i].ID == id {
-			//do nothing 
+			//do nothing
 		} else {
 			//append to the new slice
 			newArray = append(newArray, courses[i])
@@ -72,24 +73,30 @@ func deleteCourseByID(c *gin.Context) {
 	}
 	//copy the new array into courses (also possible with copy() method?)
 	courses = newArray
-	//Man bør: 
-	//2: Lave en måde at indikere om det lykkedes eller ej  //overvej at sammenligne størrelse inden og efter, og give fejl hvis størrelse er den samme
+
+	//compare the length of the new array to the length of the old array
+	//same length = nothing deleted :(
+	if len(courses) == oldLength {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "course not found"})
+	} else {
+		c.IndentedJSON(http.StatusOK, gin.H{"message": "course deleted succesfully"})
+	}
 }
 
-//kombination af tilføj og delete 
+//kombination af tilføj og delete
 func updateCourse(c *gin.Context) {
-	var newCourse course 
+	var newCourse course
 
 	//bind the recieved json to the new object
 	if err := c.BindJSON(&newCourse); err != nil {
 		return
 	}
 
-	//iterate over all courses and replace the one in question 
+	//iterate over all courses and replace the one in question
 	id := c.Param("id")
-	for i :=0; i < len(courses); i++ {
+	for i := 0; i < len(courses); i++ {
 		if courses[i].ID == id {
-			courses[i] = newCourse 
+			courses[i] = newCourse
 			//all good
 			c.IndentedJSON(http.StatusOK, newCourse)
 			return
