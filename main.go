@@ -19,7 +19,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/courses", getCourses)
 	router.GET("/courses/:id", getCourseByID)
-	router.POST("/courses", postCourses)
+	router.POST("/courses", addCourse)
 	router.DELETE("courses/:id", deleteCourseByID)
 	router.PUT("courses/:id", updateCourse)
 	router.Run("localhost:8080")
@@ -35,7 +35,7 @@ func getCourses(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, courses)
 }
 
-func postCourses(c *gin.Context) {
+func addCourse(c *gin.Context) {
 	var newCourse course
 
 	// Call BindJSON to bind the received JSON to newCourse
@@ -56,7 +56,7 @@ func getCourseByID(c *gin.Context) {
 			return
 		}
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "course not found"})
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Course not found"})
 }
 
 func deleteCourseByID(c *gin.Context) {
@@ -77,9 +77,9 @@ func deleteCourseByID(c *gin.Context) {
 	//compare the length of the new array to the length of the old array
 	//same length = nothing deleted :(
 	if len(courses) == oldLength {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "course not found"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Course not found"})
 	} else {
-		c.IndentedJSON(http.StatusOK, gin.H{"message": "course deleted succesfully"})
+		c.IndentedJSON(http.StatusOK, gin.H{"message": "Course deleted succesfully"})
 	}
 }
 
@@ -102,5 +102,5 @@ func updateCourse(c *gin.Context) {
 			return
 		}
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "something went wrong"})
+	c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "something went wrong"})
 }
