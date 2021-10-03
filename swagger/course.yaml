@@ -1,0 +1,104 @@
+swagger: "2.0"
+
+info:
+    description: Course microservice for mandatory exercise 1
+    title: Mandatory exercise 1 (daas, seho, lanc)
+    version: 1.0.0
+host: "localhost:8080"
+#basePath: /v1 <-- skal denne være der? 
+schemes:
+  - https
+  
+paths: 
+  /course: 
+    get: 
+      tags: 
+      - "course"
+      summary: "Get all courses"
+      operationId: "getCourses"
+      responses: 
+        "200":
+          description: "OK" #burde faktisk være en json body... 
+    post: 
+      tags: 
+        - "course"
+      summary: "Add a course"
+      operationId: "addCourse"
+      responses: 
+        "201":
+          description: "OK"
+        "405": #denne er ikke med i vores go-kode 
+          description: "Invalid input"
+      
+  /course/{courseId}:
+    get: 
+      tags: 
+      - "course"
+      description: "This is used to find a course by id"
+      summary: "Find a course by id"
+      operationId: "getCourseByID"
+      parameters: 
+      - name: "courseId"
+        in: "path"
+        description: "ID of course to find"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses: 
+        "200":
+          description: "OK" #burde faktisk være en json body her... 
+        "404":
+          description: "Course not found"
+    delete: 
+      tags:
+      - "course"
+      summary: "Deletes a course"
+      operationId: "deleteCourseByID"
+      parameters: 
+      - name: "courseId"
+        in: "path"
+        description: "ID of course to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses: 
+        "200":
+          description: "Course deleted successfully"
+        "404":
+          description: "Course not found"
+    put: 
+      tags:
+      - "course"
+      summary: "Update a course"
+      operationId: "updateCourse"
+      parameters: 
+      - name: "courseId"
+        in: "path"
+        description: "ID of course that needs updating"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "body"
+        in: "body"
+        description: "The course object with updated information"
+        schema: 
+          type: object
+          required: 
+            - ID
+            - Name
+          properties: 
+            ID:
+              type: integer
+            Rating: 
+              type: number
+            Name: 
+              type: string
+            Students: 
+              type: array
+              items:
+                type: string
+      responses: 
+        "200":
+          description: "OK"
+        "400": #a more describing code should be possible to find... 
+          description: "Something went wrong" 
