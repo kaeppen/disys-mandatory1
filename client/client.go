@@ -41,7 +41,7 @@ func getDemo() string {
 
 func postDemo() string {
 	client := &http.Client{}
-	var jsonStr = []byte(`{"id": "5", "rating": 0.1, "name": "Bæredygtigt design", "students": []}`)
+	var jsonStr = []byte(`{"id": "5", "rating": 0.1, "name": "Bæredygtigt design", "workload": 0.1, "students": []}`)
 	//make request
 	req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/courses", bytes.NewBuffer(jsonStr)) //send the json string as payload
 	req.Header.Set("X-Custom-Header", "myvalue") //wtf
@@ -85,7 +85,7 @@ func deleteDemo() string {
 //does not output anything atm
 func putDemo() string {
 	client := &http.Client{}
-	var jsonStr = []byte(`{"id": "4", "rating": 9.5, "name": "Algo", "students": ["Alle", "Er med"]}`)
+	var jsonStr = []byte(`{"id": "4", "rating": 9.5, "name": "Algo", "workload":7.5, "students": ["Alle", "Er med"]}`)
 	//make request
 	req, err := http.NewRequest(http.MethodPut, "http://localhost:8080/courses/2", bytes.NewBuffer(jsonStr)) //send the json string as payload
 	//req.Header.Set("X-Custom-Header", "myvalue") //wtf

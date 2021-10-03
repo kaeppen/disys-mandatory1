@@ -27,6 +27,7 @@ type course struct {
 	ID       string   `json:"id"`
 	Rating   float64  `json:"rating"`
 	Name     string   `json:"name"`
+	Workload float64  `json:"workload"`
 	Students []string `json:"students"`
 }
 
@@ -41,9 +42,9 @@ func main() {
 }
 
 var courses = []course{
-	{ID: "1", Rating: 9.9, Name: "Dømat", Students: []string{"Stefan", "Dagrun", "Marcus"}},
-	{ID: "2", Rating: 5.2, Name: "BPAK", Students: []string{}},
-	{ID: "3", Rating: 10.0, Name: "GrPro", Students: []string{"Christoffer", "Martin", "Henning"}},
+	{ID: "1", Rating: 9.9, Name: "Dømat", Workload: 9001.0, Students: []string{"Stefan", "Dagrun", "Marcus"}},
+	{ID: "2", Rating: 5.2, Name: "BPAK", Workload: 0.0, Students: []string{}},
+	{ID: "3", Rating: 10.0, Name: "GrPro", Workload: 15.0, Students: []string{"Christoffer", "Martin", "Henning"}},
 }
 
 func getCourses(c *gin.Context) {
