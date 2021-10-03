@@ -2,27 +2,15 @@ package main
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
-
-type student struct {
-	ID      string   `json:"id"`
-	Name    string   `json:"name"`
-	Courses []string `json:"courses"` //skal muligvis senere relatere til course "objekter"? samme for de andre arrays <-- kun hvis man virkelig er fresh
-}
+//hvis man virkelig er fresh, så skal nogle af felterne i struct være pointers, men det er ikke i denne opgaves scope
 
 type course struct {
 	ID       string   `json:"id"`
 	Rating   float64  `json:"rating"`
 	Name     string   `json:"name"`
 	Students []string `json:"students"`
-}
-
-type teacher struct {
-	ID      string   `json:"id"`
-	Name    string   `json:"name"`
-	Courses []string `json:"courses"`
 }
 
 func main() {
@@ -40,11 +28,6 @@ var courses = []course{
 	{ID: "3", Rating: 10.0, Name: "GrPro", Students: []string{"Christoffer", "Martin", "Henning"}},
 }
 
-var students = []student{
-	{ID: "1", Name: "Jannick", Courses: []string{"Math"}},
-	{ID: "2", Name: "Henning", Courses: []string{"RUC-fag", "How to get a job"}},
-	{ID: "3", Name: "Ib", Courses: []string{"Science", "Math", "Computer Science"}},
-}
 
 func getCourses(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, courses)
@@ -53,21 +36,18 @@ func getCourses(c *gin.Context) {
 func postCourses(c *gin.Context) {
 	var newCourse course
 
-	// Call BindJSON to bind the received JSON to newStudent
+	// Call BindJSON to bind the received JSON to newCourse
 	if err := c.BindJSON(&newCourse); err != nil {
 		return
 	}
 
-	// Add the new student to the slice.
+	// Add the new course to the slice.
 	courses = append(courses, newCourse)
 	c.IndentedJSON(http.StatusCreated, newCourse)
 }
 
 func getCourseByID(c *gin.Context) {
 	id := c.Param("id")
-
-	// Loop over the list of albums, looking for
-	// an album whose ID value matches the parameter.
 	for _, a := range courses {
 		if a.ID == id {
 			c.IndentedJSON(http.StatusOK, a)
