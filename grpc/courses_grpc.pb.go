@@ -21,10 +21,10 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoursesClient interface {
 	AddCourse(ctx context.Context, in *NewCourse, opts ...grpc.CallOption) (*Course, error)
-	DeleteCourse(ctx context.Context, in *wrapperspb.Int32Value, opts ...grpc.CallOption) (*Course, error)
-	GetCourseById(ctx context.Context, in *wrapperspb.Int32Value, opts ...grpc.CallOption) (*Course, error)
+	DeleteCourse(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*Course, error)
+	GetCourseById(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*Course, error)
 	GetCourses(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CourseArray, error)
-	UpdateCourse(ctx context.Context, in *wrapperspb.Int32Value, opts ...grpc.CallOption) (*Course, error)
+	UpdateCourse(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*Course, error)
 }
 
 type coursesClient struct {
@@ -44,7 +44,7 @@ func (c *coursesClient) AddCourse(ctx context.Context, in *NewCourse, opts ...gr
 	return out, nil
 }
 
-func (c *coursesClient) DeleteCourse(ctx context.Context, in *wrapperspb.Int32Value, opts ...grpc.CallOption) (*Course, error) {
+func (c *coursesClient) DeleteCourse(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*Course, error) {
 	out := new(Course)
 	err := c.cc.Invoke(ctx, "/courses.Courses/DeleteCourse", in, out, opts...)
 	if err != nil {
@@ -53,7 +53,7 @@ func (c *coursesClient) DeleteCourse(ctx context.Context, in *wrapperspb.Int32Va
 	return out, nil
 }
 
-func (c *coursesClient) GetCourseById(ctx context.Context, in *wrapperspb.Int32Value, opts ...grpc.CallOption) (*Course, error) {
+func (c *coursesClient) GetCourseById(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*Course, error) {
 	out := new(Course)
 	err := c.cc.Invoke(ctx, "/courses.Courses/GetCourseById", in, out, opts...)
 	if err != nil {
@@ -71,7 +71,7 @@ func (c *coursesClient) GetCourses(ctx context.Context, in *emptypb.Empty, opts 
 	return out, nil
 }
 
-func (c *coursesClient) UpdateCourse(ctx context.Context, in *wrapperspb.Int32Value, opts ...grpc.CallOption) (*Course, error) {
+func (c *coursesClient) UpdateCourse(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*Course, error) {
 	out := new(Course)
 	err := c.cc.Invoke(ctx, "/courses.Courses/UpdateCourse", in, out, opts...)
 	if err != nil {
@@ -85,10 +85,10 @@ func (c *coursesClient) UpdateCourse(ctx context.Context, in *wrapperspb.Int32Va
 // for forward compatibility
 type CoursesServer interface {
 	AddCourse(context.Context, *NewCourse) (*Course, error)
-	DeleteCourse(context.Context, *wrapperspb.Int32Value) (*Course, error)
-	GetCourseById(context.Context, *wrapperspb.Int32Value) (*Course, error)
+	DeleteCourse(context.Context, *wrapperspb.StringValue) (*Course, error)
+	GetCourseById(context.Context, *wrapperspb.StringValue) (*Course, error)
 	GetCourses(context.Context, *emptypb.Empty) (*CourseArray, error)
-	UpdateCourse(context.Context, *wrapperspb.Int32Value) (*Course, error)
+	UpdateCourse(context.Context, *wrapperspb.StringValue) (*Course, error)
 	mustEmbedUnimplementedCoursesServer()
 }
 
@@ -99,16 +99,16 @@ type UnimplementedCoursesServer struct {
 func (UnimplementedCoursesServer) AddCourse(context.Context, *NewCourse) (*Course, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddCourse not implemented")
 }
-func (UnimplementedCoursesServer) DeleteCourse(context.Context, *wrapperspb.Int32Value) (*Course, error) {
+func (UnimplementedCoursesServer) DeleteCourse(context.Context, *wrapperspb.StringValue) (*Course, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCourse not implemented")
 }
-func (UnimplementedCoursesServer) GetCourseById(context.Context, *wrapperspb.Int32Value) (*Course, error) {
+func (UnimplementedCoursesServer) GetCourseById(context.Context, *wrapperspb.StringValue) (*Course, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourseById not implemented")
 }
 func (UnimplementedCoursesServer) GetCourses(context.Context, *emptypb.Empty) (*CourseArray, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourses not implemented")
 }
-func (UnimplementedCoursesServer) UpdateCourse(context.Context, *wrapperspb.Int32Value) (*Course, error) {
+func (UnimplementedCoursesServer) UpdateCourse(context.Context, *wrapperspb.StringValue) (*Course, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCourse not implemented")
 }
 func (UnimplementedCoursesServer) mustEmbedUnimplementedCoursesServer() {}
@@ -143,7 +143,7 @@ func _Courses_AddCourse_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 func _Courses_DeleteCourse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(wrapperspb.Int32Value)
+	in := new(wrapperspb.StringValue)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -155,13 +155,13 @@ func _Courses_DeleteCourse_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/courses.Courses/DeleteCourse",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoursesServer).DeleteCourse(ctx, req.(*wrapperspb.Int32Value))
+		return srv.(CoursesServer).DeleteCourse(ctx, req.(*wrapperspb.StringValue))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Courses_GetCourseById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(wrapperspb.Int32Value)
+	in := new(wrapperspb.StringValue)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func _Courses_GetCourseById_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/courses.Courses/GetCourseById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoursesServer).GetCourseById(ctx, req.(*wrapperspb.Int32Value))
+		return srv.(CoursesServer).GetCourseById(ctx, req.(*wrapperspb.StringValue))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -197,7 +197,7 @@ func _Courses_GetCourses_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _Courses_UpdateCourse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(wrapperspb.Int32Value)
+	in := new(wrapperspb.StringValue)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -209,7 +209,7 @@ func _Courses_UpdateCourse_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/courses.Courses/UpdateCourse",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoursesServer).UpdateCourse(ctx, req.(*wrapperspb.Int32Value))
+		return srv.(CoursesServer).UpdateCourse(ctx, req.(*wrapperspb.StringValue))
 	}
 	return interceptor(ctx, in, info, handler)
 }

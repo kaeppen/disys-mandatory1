@@ -5,7 +5,9 @@ import (
 	"log"
 	"time"
 
-	grpc "google.golang.org/grpc"
+	pb "course/grpc"
+
+	"google.golang.org/grpc"
 	//tutorial fyr har noget "pb" et eller andet med her...
 )
 
@@ -13,6 +15,14 @@ import (
 const (
 	address = "localhost:8080"
 )
+
+type course struct {
+	ID       string   `json:"id"`
+	Rating   float64  `json:"rating"`
+	Name     string   `json:"name"`
+	Workload float64  `json:"workload"`
+	Students []string `json:"students"`
+}
 
 func main() {
 	//establish connection to server (insecure, blocking call)
@@ -34,15 +44,15 @@ func main() {
 		{ID: "2", Name: "BPAK", Workload: 0.0},
 		{ID: "3", Name: "GrPro", Workload: 15.0},
 	}
-	for course := range new_courses {
-		r, err := client.AddCourse(ctx, &pb.NewCourse{ID: course.ID, Name: course.Name, Workload: course.Workload})
+	for i := 0; i < len(new_courses); i++ {
+		r, err := client.AddCourse(ctx, &pb.NewCourse{ID: new_courses[i].ID, Name: new_courses[i].Name, Workload: new_courses[i].Workload})
 		if err != nil {
 			log.Fatalf("could not add course %v", err)
 		}
 		log.Printf(`Course details: 
-		ID: %d
+		ID: %s
 		NAME: %s
-		WORKLOAD: %d`, r.GetID(), r.GetName(), r.GetWorkload())
+		WORKLOAD: %v`, r.GetID(), r.GetName(), r.GetWorkload()) //brug %f i workload for at få decimaler med(mange though)
 	}
 
 }

@@ -2,10 +2,9 @@ package main
 
 import (
 	"context"
+	pb "course/grpc"
 	"log"
 	"net"
-
-	pb "./courses.pb.go"
 
 	"google.golang.org/grpc"
 	//tutorial fyr har noget "pb" et eller andet med her...
@@ -22,7 +21,7 @@ type courseServer struct {
 
 func (s *courseServer) AddCourse(ctx context.Context, in *pb.NewCourse) (*pb.Course, error) {
 	log.Printf("Recieved: %v", in.GetName())
-	return &pb.Course{Id: in.GetID(), Name: in.getName(), Workload: in.GetWorkload()}, nil
+	return &pb.Course{ID: in.GetID(), Name: in.GetName(), Workload: in.GetWorkload()}, nil
 }
 
 /*
@@ -37,7 +36,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	server := grpc.NewServer()
-	pb.RegisterCoursesServer(server, &CoursesServer{})
+	pb.RegisterCoursesServer(server, &courseServer{})
 	log.Printf("server listening at %v", lis.Addr())
 	if err := server.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
