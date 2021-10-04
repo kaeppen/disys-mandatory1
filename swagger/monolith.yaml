@@ -8,7 +8,8 @@ host: "localhost:8080"
 #basePath: /v1 <-- skal denne være der? 
 schemes:
   - https
-  
+  - http
+
 paths: 
   /course: 
     get: 
@@ -16,18 +17,41 @@ paths:
       - "course"
       summary: "Get all courses"
       operationId: "getCourses"
+      #should have had "produces"? as it produces some output? 
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body... 
+          description: "OK" 
     post: 
       tags: 
         - "course"
       summary: "Add a course"
       operationId: "addCourse"
+      parameters: 
+      - name: "body"
+        in: "body"
+        description: "The course object"
+        schema: 
+          type: object
+          required: 
+            - ID
+            - Name
+          properties: 
+            ID:
+              type: integer
+            Rating: 
+              type: number
+            Name: 
+              type: string
+            Workload: 
+              type: number 
+            Students: 
+              type: array
+              items:
+                type: string
       responses: 
         "201":
           description: "OK"
-        "405": #denne er ikke med i vores go-kode 
+        "405": #aint actually implemented in the code
           description: "Invalid input"
       
   /course/{courseId}:
@@ -46,7 +70,7 @@ paths:
         format: "int64"
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body her... 
+          description: "OK" 
         "404":
           description: "Course not found"
     delete: 
@@ -93,6 +117,8 @@ paths:
               type: number
             Name: 
               type: string
+            Workload: 
+              type: number 
             Students: 
               type: array
               items:
@@ -102,7 +128,7 @@ paths:
           description: "OK"
         "400": #a more describing code should be possible to find... 
           description: "Something went wrong" 
-        
+
   /student: 
     get: 
       tags: 
@@ -111,7 +137,7 @@ paths:
       operationId: "getStudents"
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body... 
+          description: "OK" 
     post: 
       tags: 
         - "student"
@@ -120,7 +146,7 @@ paths:
       responses: 
         "201":
           description: "OK"
-        "405": #denne er ikke med i vores go-kode 
+        "405": #not in the go code
           description: "Invalid input"
       
   /student/{studentId}:
@@ -139,7 +165,7 @@ paths:
         format: "int64"
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body her... 
+          description: "OK" 
         "404":
           description: "Student not found"
     delete: 
@@ -193,9 +219,7 @@ paths:
           description: "OK"
         "400": #a more describing code should be possible to find... 
           description: "Something went wrong" 
-          
-          
-          
+
   /teacher: 
     get: 
       tags: 
@@ -204,7 +228,7 @@ paths:
       operationId: "getTeachers"
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body... 
+          description: "OK" 
     post: 
       tags: 
         - "teacher"
@@ -213,7 +237,7 @@ paths:
       responses: 
         "201":
           description: "OK"
-        "405": #denne er ikke med i vores go-kode 
+        "405":  
           description: "Invalid input"
       
   /teacher/{teacherId}:
@@ -232,7 +256,7 @@ paths:
         format: "int64"
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body her... 
+          description: "OK" 
         "404":
           description: "Teacher not found"
     delete: 
@@ -283,4 +307,4 @@ paths:
         "200":
           description: "OK"
         "400": #a more describing code should be possible to find... 
-          description: "Something went wrong"           
+          description: "Something went wrong"                

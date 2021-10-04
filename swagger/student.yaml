@@ -5,9 +5,9 @@ info:
     title: Mandatory exercise 1 (daas, seho, lanc)
     version: 1.0.0
 host: "localhost:8080"
-#basePath: /v1 <-- skal denne være der? 
 schemes:
   - https
+  - http
     
 paths:  
   /student: 
@@ -18,7 +18,7 @@ paths:
       operationId: "getStudents"
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body... 
+          description: "OK" 
     post: 
       tags: 
         - "student"
@@ -27,7 +27,7 @@ paths:
       responses: 
         "201":
           description: "OK"
-        "405": #denne er ikke med i vores go-kode 
+        "405": #not in the go code
           description: "Invalid input"
       
   /student/{studentId}:
@@ -46,7 +46,7 @@ paths:
         format: "int64"
       responses: 
         "200":
-          description: "OK" #burde faktisk være en json body her... 
+          description: "OK" 
         "404":
           description: "Student not found"
     delete: 

@@ -1,25 +1,25 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
-//hvis man virkelig er fresh, så skal nogle af felterne i struct være pointers, men det er ikke i denne opgaves scope
-
-//THESE STRUCTS ARE JUST FOR SHOW 
+//THESE STRUCTS ARE JUST FOR SHOW
 type teacher struct {
-	ID      string   `json:"id"`
-	Name    string   `json:"name"`
+	ID         string  `json:"id"`
+	Name       string  `json:"name"`
 	Popularity float64 `json: "popularity"`
 }
 
 type student struct {
 	ID      string   `json:"id"`
 	Name    string   `json:"name"`
-	Courses []string `json:"courses"` 
+	Courses []string `json:"courses"`
 }
+
 //-----------------------
 
 type course struct {
@@ -58,9 +58,9 @@ func addCourse(c *gin.Context) {
 		return
 	}
 
-	// Add the new course to the slice.
+	// Add the new course to the array
 	courses = append(courses, newCourse)
-	c.IndentedJSON(http.StatusCreated, gin.H{"Course":newCourse, "message":"successfully added"}) 
+	c.IndentedJSON(http.StatusCreated, gin.H{"Course": newCourse, "message": "successfully added"})
 	return
 }
 
@@ -97,19 +97,18 @@ func deleteCourseByID(c *gin.Context) {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Course not found"})
 		return
 	} else {
-		c.IndentedJSON(http.StatusOK, gin.H{"Course": deleted, "message":"successfully deleted"})
+		c.IndentedJSON(http.StatusOK, gin.H{"Course": deleted, "message": "successfully deleted"})
 		return
 	}
 }
 
-//kombination af tilføj og delete
 func updateCourse(c *gin.Context) {
 	var newCourse course
 
 	//bind the recieved json to the new object
 	if err := c.BindJSON(&newCourse); err != nil {
 		fmt.Println(err.Error())
-		return 
+		return
 	}
 
 	//iterate over all courses and replace the one in question
@@ -123,5 +122,5 @@ func updateCourse(c *gin.Context) {
 		}
 	}
 	c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "something went wrong"})
-	return 
+	return
 }
